@@ -1,0 +1,9 @@
+.listStyle {
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bolder;
+}
+
+.activelist {
+    border-bottom: 1px solid black;
+}
