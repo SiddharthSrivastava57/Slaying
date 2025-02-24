@@ -1,75 +1,99 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import "./stylesheets/body1.css";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
+import AppNavbar from "./Components/AppNavbar";
+import Browse from "./Components/Browse";
+import ForgotPassword from "./Components/ForgotPassword";
+import ResetPassword from "./Components/ResetPassword";
+import Profile from "./Components/Profile";
+
 function App() {
   const [isScrolled, setIsScrolled] = useState(false);
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > window.innerHeight / 2) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [name, setName] = useState("John Snow");
+  const [email, setEmail] = useState("johnsnow@got.com");
+
   return (
     <>
-      <div>
-        <div
-          className={`heading-bar transition-all duration-500 ease-in-out w-full flex items-center ${
-            isScrolled
-              ? "fixed  top-0 left-0 bg-white justify-between "
-              : "absolute h-screen  bg-white text-gray-700 top-1/2 left-0 transform -translate-y-1/2"
-          }`}
-        >
-          <h1
-            // className="text-4xl"
-            className={` font-mono transition-all duration-500 ease-in-out font-bold ml-4 py-3 px-6 ${
-              isScrolled ? "text-2xl " : "text-6xl"
-            }`}
-          >
-            Heading
-          </h1>
-          {isScrolled && (
-            <nav>
-              <ul className="flex space-x-20 mx-5">
-                <li className="transition duration-300 p-5 activelist">
-                  <a href="#" className="listStyle ">
-                    Home
-                  </a>
-                </li>
-                <li className="p-5">
-                  <a href="#" className="listStyle">
-                    Browse
-                  </a>
-                </li>
-                <li className="center p-5">
-                  <a href="#" className="listStyle">
-                    Cart
-                  </a>
-                </li>
-                <li className="center p-5">
-                  <a href="#" className="listStyle">
-                    Login
-                  </a>
-                </li>
-                <li className=" p-5">
-                  <a href="#" className="listStyle">
-                    Signup
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          )}
+      <BrowserRouter>
+        <AppNavbar
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+        />
+        <div>
+          <Routes>
+            <Route
+              path="/"
+              exact
+              element={
+                <Home isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+              }
+            />
+
+            <Route
+              path="browse"
+              exact
+              element={
+                <Browse
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setName={setName}
+                  setEmail={setEmail}
+                />
+              }
+            />
+            <Route
+              path="login"
+              exact
+              element={
+                <Login
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setName={setName}
+                  setEmail={setEmail}
+                />
+              }
+            />
+            <Route
+              path="signup"
+              exact
+              element={
+                <Signup
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setName={setName}
+                  setEmail={setEmail}
+                />
+              }
+            />
+            <Route
+              path="forgotPassword"
+              exact
+              element={<ForgotPassword isLoggedIn={isLoggedIn} />}
+            />
+            <Route
+              path="resetPassword"
+              element={<ResetPassword isLoggedIn={isLoggedIn} />}
+            />
+            <Route
+              path="profile"
+              exact
+              element={
+                <Profile isLoggedIn={isLoggedIn} name={name} email={email} />
+              }
+            />
+          </Routes>
         </div>
-        {/* <Home /> */}
-        {/* <Login /> */}
-        <Signup />
-      </div>
+      </BrowserRouter>
     </>
   );
 }
